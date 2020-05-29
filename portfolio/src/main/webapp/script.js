@@ -15,14 +15,15 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function randomJojoQuote() {
+  const jojoQuotes =
+      ['If there\'s no Mickey, this ain\'t Disney', 'Do you believe in Gravity?', 'This is a test...', 'Wouldn\'t you agree, Jean Pierre Polnareff?', 
+      'This... is.... Requiem', 'What a beautiful Duwang... Chew', 'Oh? You\'re approaching me?', 'OH NOOOOOO', 'YES YES YES', 'Awaken my masters!'];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const jojoQuote = jojoQuotes[Math.floor(Math.random() * jojoQuotes.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const jojoContainer = document.getElementById('jojo-container');
+  jojoContainer.innerText = jojoQuote;
 }
