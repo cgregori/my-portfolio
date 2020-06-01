@@ -27,3 +27,9 @@ function randomJojoQuote() {
   const jojoContainer = document.getElementById('jojo-container');
   jojoContainer.innerText = jojoQuote;
 }
+
+async function helloName() {
+  const response = await fetch('/data');
+  const name = await response.text();
+  document.getElementById('display-name').innerText = name;
+}
