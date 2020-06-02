@@ -29,7 +29,15 @@ function randomJojoQuote() {
 }
 
 async function helloName() {
-  const response = await fetch('/data');
-  const name = await response.text();
-  document.getElementById('display-name').innerText = name;
+  console.log('Hello World');
+  fetch('/data').then(response => response.json()).then((names) => {
+    document.getElementById('display-name').innerText = names;
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
