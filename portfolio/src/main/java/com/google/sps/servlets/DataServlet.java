@@ -27,23 +27,33 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> names;
+  private List<String> comments;
 
   @Override
   public void init() {
-    names = new ArrayList<>();
-    names.add("Carrington");
-    names.add("Tone");
-    names.add("24C");
-    names.add("B");
+    comments = new ArrayList<>();
+    comments.add("Sample Comment 1");
+    comments.add("Sample Comment 2");
+    comments.add("Sample Comment 3");
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(names);
+    String json = convertToJson(comments);
 
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String comment = request.getParameter("comment-input");
+
+    comments.add(comment);
+
+    response.setContentType("text/html;");
+    response.getWriter().println("Here\'s the last posted comment: \n");
+    response.getWriter().println(comments.get(comments.size() - 1));
   }
 
   private String convertToJson(List<String> strings) {
