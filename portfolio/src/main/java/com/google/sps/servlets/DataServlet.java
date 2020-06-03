@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import java.io.IOException;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,9 +54,18 @@ public class DataServlet extends HttpServlet {
 
     comments.add(comment);
 
-    response.setContentType("text/html;");
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment", comment);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    response.sendRedirect("/index.html");
+
+    /*response.setContentType("text/html;");
     response.getWriter().println("Here\'s the last posted comment: \n");
-    response.getWriter().println(comments.get(comments.size() - 1));
+    response.getWriter().println(comments.get(comments.size() - 1));*/
   }
 
   private String convertToJson(List<String> strings) {
