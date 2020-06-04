@@ -35,9 +35,41 @@ async function helloName() {
   });
 }
 
+/**fetches comments from the server and adds them to the DOM*/
+async function loadComments() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    console.log(comments);
+    const commentsListElement = document.getElementById('comments-list');
+    comments.forEach((comment) => {
+      commentsListElement.appendChild(createCommentElement(comment));
+    })
+  });
+}
+
 /** Creates an <li> element containing text. */
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function createCommentElement(comment) {
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
+
+  console.log(comment);
+
+  const titleElement = document.createElement('span');
+  titleElement.innerText = comment.content;
+  console.log(comment.comment);
+
+  const upvoteButtonElement = document.createElement('button');
+  upvoteButtonElement.innerText = 'Upvote';
+  upvoteButtonElement.addEventListener('click', () => {
+      //TODO(cgregori): Add upvote functionality
+      console.log('This should upvote the comment');
+  })
+
+  commentElement.appendChild(titleElement);
+  
+  return commentElement;
+}
+
+/** Tells the server tp upvote a comment */
+function upvoteComment(comment) {
+
 }

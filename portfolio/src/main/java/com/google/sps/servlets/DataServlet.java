@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Comment;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,30 +34,36 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> comments;
-
   @Override
-  public void init() {
-    comments = new ArrayList<>();
-    comments.add("Sample Comment 1");
-    comments.add("Sample Comment 2");
-    comments.add("Sample Comment 3");
-  }
+  public void init() {}
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(comments);
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
+    Query query = new Query("Comment").addSort("comment");
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> comments = new ArrayList<>();
+    for(Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String commentContent = (String) entity.getProperty("comment");
+      System.out.println(commentContent);
+
+      Comment comment = new Comment(id, commentContent);
+      comments.add(comment);
+    }
+    
+    Gson gson = new Gson();
+
+    response.setContentType("application/json");
+    response.getWriter().println(gson.toJson(comments));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = request.getParameter("comment-input");
-
-    comments.add(comment);
-
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("comment", comment);
@@ -62,10 +72,6 @@ public class DataServlet extends HttpServlet {
     datastore.put(commentEntity);
 
     response.sendRedirect("/index.html");
-
-    /*response.setContentType("text/html;");
-    response.getWriter().println("Here\'s the last posted comment: \n");
-    response.getWriter().println(comments.get(comments.size() - 1));*/
   }
 
   private String convertToJson(List<String> strings) {
