@@ -37,7 +37,8 @@ async function helloName() {
 
 /**fetches comments from the server and adds them to the DOM*/
 async function loadComments() {
-  fetch('/data?param=sample').then(response => response.json()).then((comments) => {
+  fetch('/data').then(response => response.json()).then((comments) => {
+
     const commentsListElement = document.getElementById('comments-list');
     comments.forEach((comment) => {
       commentsListElement.appendChild(createCommentElement(comment));
@@ -65,7 +66,7 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
-/** Tells the server tp upvote a comment */
+/** Tells the server to upvote a comment */
 function upvoteComment(comment) {
-
+  //TODO(cgregori): Add upvote functionality
 }

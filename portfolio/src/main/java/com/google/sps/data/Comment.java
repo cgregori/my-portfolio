@@ -18,7 +18,7 @@ package com.google.sps.data;
 public final class Comment {
 
   private final long id;
-  private final String content;
+  private String content;
 
   public Comment(long id, String content) {
     this.id = id;

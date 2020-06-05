@@ -39,8 +39,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String param = request.getParameter("param");
-    System.out.println(param);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -52,6 +50,7 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String commentContent = (String) entity.getProperty("comment");
 
+      Comment comment = new Comment(id, commentContent);
       comments.add(comment);
     }
     
