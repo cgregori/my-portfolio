@@ -35,7 +35,7 @@ async function helloName() {
   });
 }
 
-/**fetches comments from the server and adds them to the DOM*/
+/** Fetches comments from the server and adds them to the DOM*/
 async function loadComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
 
