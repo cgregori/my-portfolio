@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -34,26 +35,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  int maxComments;
+
   @Override
-  public void init() {}
+  public void init() {
+    maxComments = 10;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    Query query = new Query("Comment").addSort("comment");
-    PreparedQuery results = datastore.prepare(query);
-
-    List<Comment> comments = new ArrayList<>();
-    for(Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      String commentContent = (String) entity.getProperty("comment");
-
-      Comment comment = new Comment(id, commentContent);
-      comments.add(comment);
-    }
     
+    //For body onload="loadComments()"
+    getMaxComments(request);
+    List<Comment> comments = loadComments(maxComments);
+
     Gson gson = new Gson();
 
     response.setContentType("application/json");
@@ -62,15 +57,29 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    //Logic for receiving maxComments from form
+    getMaxComments(request);
+    if(maxComments != -1) {
+      List<Comment> comments = loadComments(maxComments);
+      Gson gson = new Gson();
+      response.setContentType("application/json");
+      response.getWriter().println(gson.toJson(comments));
+      String redirectUrl = "/index.html?maxComments=" + maxComments;
+      response.sendRedirect(redirectUrl);
+    }
+
+    //Logic for new comment
     String comment = request.getParameter("comment-input");
+    if(comment != null) {
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("comment", comment);
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("comment", comment);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(commentEntity);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-
-    response.sendRedirect("/index.html");
+      response.sendRedirect("/index.html");
+    }
   }
 
   private String convertToJson(List<String> strings) {
@@ -78,4 +87,35 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(strings);
     return json;
   }
+
+  private void getMaxComments(HttpServletRequest request) {
+    //Convert the max input to a string
+    String maxCommentsString = request.getParameter("maxComments");
+    if(maxCommentsString != null) {    
+      try {
+        maxComments = Integer.parseInt(maxCommentsString);
+        return;
+      } catch (NumberFormatException e) {
+        System.err.println("Could not convert to int: " + maxCommentsString);
+      }
+    }
+    maxComments = -1;
+  }
+
+  private List<Comment> loadComments(int maxComments) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment").addSort("comment");
+    List<Entity> results = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(maxComments));
+
+    List<Comment> comments = new ArrayList<>();
+    for(Entity entity : results) {
+      long id = entity.getKey().getId();
+      String commentContent = (String) entity.getProperty("comment");
+
+      Comment comment = new Comment(id, commentContent);
+      comments.add(comment);
+    }
+    return comments;
+  }
+
 }
