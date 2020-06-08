@@ -54,10 +54,10 @@ function parseMaxComments() {
   let pos = queryString.search("maxComments=");
   let maxComments
   if(pos != -1) {
-    //Add "maxComments=".length (12) to position
+    // Add "maxComments=".length (12) to position.
      maxComments = queryString.slice(pos+12);
   } else {
-    //Default value of maxComments
+    // Default value of maxComments.
     maxComments = 10;
   }
   return maxComments
