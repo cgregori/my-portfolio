@@ -35,15 +35,32 @@ async function helloName() {
   });
 }
 
-/** Fetches comments from the server and adds them to the DOM*/
+/** Fetches comments from the server and adds them to the DOM. */
 async function loadComments() {
-  fetch('/data').then(response => response.json()).then((comments) => {
-
+  let maxComments = parseMaxComments();
+  let url = '/data?maxComments=' + maxComments;
+  fetch(url).then(response => response.json()).then((comments) => {
     const commentsListElement = document.getElementById('comments-list');
     comments.forEach((comment) => {
       commentsListElement.appendChild(createCommentElement(comment));
     })
   });
+}
+
+function parseMaxComments() {
+  let currentUrl = getURL();
+  let parser = new URL(currentUrl); 
+  let queryString = parser.search;
+  let pos = queryString.search("maxComments=");
+  let maxComments
+  if(pos != -1) {
+    //Add "maxComments=".length (12) to position
+     maxComments = queryString.slice(pos+12);
+  } else {
+    //Default value of maxComments
+    maxComments = 10;
+  }
+  return maxComments
 }
 
 /** Creates an <li> element containing text. */
@@ -69,4 +86,8 @@ function createCommentElement(comment) {
 /** Tells the server to upvote a comment */
 function upvoteComment(comment) {
   //TODO(cgregori): Add upvote functionality
+}
+
+function getURL() {
+  return String(window.location.href);
 }
