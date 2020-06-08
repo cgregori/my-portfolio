@@ -88,6 +88,18 @@ function upvoteComment(comment) {
   //TODO(cgregori): Add upvote functionality
 }
 
+
+function deleteComments() {
+  fetch('delete-data', {method: 'POST'}).then(response => {
+    if(response.ok){
+      loadComments();
+      window.location.reload();
+    } else {
+      console.log("Error: " + response.statusText);
+    }
+  });
+}
+
 function getURL() {
   return String(window.location.href);
 }
