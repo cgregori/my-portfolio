@@ -8,12 +8,20 @@ h1 {
   background-color: #990099
 }
 
-div {
+#content {
   background-color: #cc99ff
 }
 
 greeting-container {
   margin-top: 20px;
+}
+
+#map {
+  height: 75%;
+}
+
+html, body {
+  height: 100%;
 }
 
 /* Add a black background color to the top navigation */
