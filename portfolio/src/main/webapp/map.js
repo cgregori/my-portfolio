@@ -150,7 +150,19 @@ window.initMap = function() {
     map: map
   });
 
-  //TODO(cgregori): Add more markers to good restaurants in NYC 
+  var sobaInfoWindow = new google.maps.InfoWindow({
+    content: '<h1 id="sobaInfoHeading">Oh! Taisho</h1>' +
+      '<div id=sobaInfoContent>' +
+      '<p>This restaurant has very good soba and ramen. I highly reccomend it.</p>' +
+      '<p>Open <a href="https://goo.gl/maps/2Lj1Y8jaeuRH6F5Q6" target="_blank">Oh! Taisho</a> in Google Maps</p>' +
+      '</div>'
+  });
+
+  marker.addListener('click', function() {
+    sobaInfoWindow.open(map, marker)
+  });
+
+  // TODO(cgregori): Add more markers to good restaurants in NYC 
 
 };
 
@@ -159,5 +171,5 @@ document.head.appendChild(script);
 
 /** Gets Maps API key from Datastore */
 function retrieveApiKey() {
-  //TODO(cgregori): Secure api key using Datastore entity
+  // TODO(cgregori): Secure api key using Datastore entity
 }

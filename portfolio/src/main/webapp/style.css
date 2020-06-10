@@ -1,29 +1,3 @@
-content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
-}
-
-h1 {
-  background-color: #990099
-}
-
-#content {
-  background-color: #cc99ff
-}
-
-greeting-container {
-  margin-top: 20px;
-}
-
-#map {
-  height: 75%;
-}
-
-html, body {
-  height: 100%;
-}
-
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #333;
@@ -51,3 +25,75 @@ html, body {
   background-color: rgb(118, 46, 133);
   color: white;
 }
+
+#content-wrapper {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+
+#content-wrapper-header {
+  background-color: #990099;
+  text-align: center;
+}
+
+#content-left {
+  display: inline-block;
+  background-color: #cc99ff;
+  align-content: right;
+}
+
+#content-right {
+  display: inline-block;
+  vertical-align: top;
+  background-color: #a276c4;
+  align-content: left;
+}
+
+html, body {
+  height: 100%;
+}
+
+#comments-display-wrapper {
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+  background-color: #beeff3;
+}
+
+#comments-display {
+  display: inline-block;
+  align-content: right;
+}
+
+#comments-options {
+  display: inline-block;
+  align-content: left;
+}
+
+#new-comment {
+  margin: auto;
+  width: 40%;
+  align-content: center;
+}
+
+/* Start of CSS relating to map.js */
+#map {
+  height: 90%;
+}
+
+#map-header {
+  text-shadow: 2px 2px 5px rgb(235, 212, 131);
+  text-align: center;
+  background-color: white;
+}
+
+#sobaInfoHeading {
+  background: rgba(126, 187, 224, 0.3);
+  text-align: center;
+}
+
+#sobaInfoContent {
+  text-align: center;
+}
+/* End of CSS relating to map.js */

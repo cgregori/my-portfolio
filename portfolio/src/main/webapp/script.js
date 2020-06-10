@@ -74,7 +74,7 @@ function createCommentElement(comment) {
   const upvoteButtonElement = document.createElement('button');
   upvoteButtonElement.innerText = 'Upvote';
   upvoteButtonElement.addEventListener('click', () => {
-      //TODO(cgregori): Add upvote functionality
+      // TODO(cgregori): Add upvote functionality
       console.log('This should upvote the comment');
   })
 
@@ -85,7 +85,7 @@ function createCommentElement(comment) {
 
 /** Tells the server to upvote a comment */
 function upvoteComment(comment) {
-  //TODO(cgregori): Add upvote functionality
+  // TODO(cgregori): Add upvote functionality
 }
 
 
