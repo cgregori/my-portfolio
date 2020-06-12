@@ -39,6 +39,7 @@ async function helloName() {
 async function loadComments() {
   let maxComments = parseMaxComments();
   let url = '/data?maxComments=' + maxComments;
+  fetchBlobstoreUrl();
   fetch(url).then(response => response.json()).then((comments) => {
     const commentsListElement = document.getElementById('comments-list');
     comments.forEach((comment) => {
@@ -71,8 +72,15 @@ function createCommentElement(comment) {
   const titleElement = document.createElement('span');
   titleElement.innerText = comment.content;
 
+  if(typeof comment.imageUrl !== 'undefined') {
+    const imageElement = document.createElement('img');
+    imageElement.src = comment.imageUrl;
+    commentElement.appendChild(imageElement);
+  }
+
   const upvoteButtonElement = document.createElement('button');
   upvoteButtonElement.innerText = 'Upvote';
+  //commentElement.appendChild(upvoteButtonElement);
   upvoteButtonElement.addEventListener('click', () => {
       // TODO(cgregori): Add upvote functionality
       console.log('This should upvote the comment');
@@ -102,4 +110,12 @@ function deleteComments() {
 
 function getURL() {
   return String(window.location.href);
+}
+
+/** Stores images in blobstore and comment entities in datastore. */
+function fetchBlobstoreUrl() {
+  fetch('/blobstore-upload').then(response => response.text()).then(imageUploadUrl => {
+    const commentForm = document.getElementById('comment-form');
+    commentForm.action = imageUploadUrl;
+  });
 }

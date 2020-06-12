@@ -68,18 +68,6 @@ public class DataServlet extends HttpServlet {
       String redirectUrl = "/index.html?maxComments=" + maxComments;
       response.sendRedirect(redirectUrl);
     }
-
-    //Logic for new comment
-    String comment = request.getParameter("comment-input");
-    if(comment != null) {
-      Entity commentEntity = new Entity("Comment");
-      commentEntity.setProperty("comment", comment);
-
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(commentEntity);
-
-      response.sendRedirect("/index.html");
-    }
   }
 
   private String convertToJson(List<String> strings) {
@@ -111,8 +99,9 @@ public class DataServlet extends HttpServlet {
     for(Entity entity : results) {
       long id = entity.getKey().getId();
       String commentContent = (String) entity.getProperty("comment");
+      String imageUrl = (String) entity.getProperty("imageUrl");
 
-      Comment comment = new Comment(id, commentContent);
+      Comment comment = new Comment(id, commentContent, imageUrl);
       comments.add(comment);
     }
     return comments;

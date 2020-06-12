@@ -19,9 +19,11 @@ public final class Comment {
 
   private final long id;
   private String content;
+  private String imageUrl;
 
-  public Comment(long id, String content) {
+  public Comment(long id, String content, String imageUrl) {
     this.id = id;
+    this.imageUrl = imageUrl;
     this.content = content;
   }
 }
