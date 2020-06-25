@@ -60,7 +60,6 @@ public final class FindMeetingQuery {
         meetingTimes = new ArrayList<TimeRange>();
       }
     }
-
     return meetingTimes;
   }
 
